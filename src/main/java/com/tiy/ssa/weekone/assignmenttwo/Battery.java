@@ -3,47 +3,81 @@ package com.tiy.ssa.weekone.assignmenttwo;
 public class Battery
 {
 
-	final float maxCapacity;
-	float currentCharge;
+	final float maxKWH;
+	float currentKWH;
 	
-	
-	public Battery(float maxCapacity, float currentCharge)
+	public Battery(float maxKWH) throws Exception
 	{
-		this.maxCapacity = maxCapacity;
-		this.currentCharge = currentCharge;
+		this(maxKWH, maxKWH);
 	}
 	
-	public float charge(float charge)
+	public Battery(float maxKWH, float currentKWH) throws Exception
 	{
-		if((currentCharge + charge) > maxCapacity)
+		if(maxKWH >= 0 && currentKWH >= 0 && (currentKWH <= maxKWH))
 		{
-			currentCharge = maxCapacity;
+			this.maxKWH = maxKWH;
+			this.currentKWH = currentKWH;
 		}
 		else
 		{
-			currentCharge += charge;
+			throw new Exception();
+		}
+	}
+	
+	public float charge(float energy)
+	{
+		if(energy >= 0)
+		{
+			if((currentKWH + energy) > maxKWH)
+			{
+				currentKWH = maxKWH;
+			}
+			else
+			{
+				currentKWH += energy;
+			}
+		}
+
+		return currentKWH;
+	}
+	
+	public float discharge(float energy)
+	{
+		if(energy >= 0) {
+			if(currentKWH - energy < 0)
+			{
+				currentKWH = 0;
+			}
+			else
+			{
+				currentKWH -= energy;
+			}
+		}
+	
+		return currentKWH;
+	}
+	
+	public int howLong(float powerKW) throws Exception
+	{
+		if(powerKW > 0)
+		{
+			return Math.round(60 * ((currentKWH / powerKW)));
+		}
+		else
+		{
+			throw new Exception();
 		}
 		
-		return currentCharge;
-	}
-
-	public float discharge(float charge)
-	{
-		if(currentCharge - charge < 0)
-		{
-			currentCharge = 0;
-		}
-		else
-		{
-			currentCharge -= charge;
-		}
-		return currentCharge;
-	}
-
-	public float getCharge()
-	{
-		return currentCharge;
 	}
 	
+	public float getCapacity()
+	{
+		return maxKWH;
+	}
+	
+	public float getRemaining()
+	{
+		return currentKWH;
+	}
 	
 }
