@@ -43,7 +43,8 @@ public class Battery
 	
 	public float discharge(float energy)
 	{
-		if(energy >= 0) {
+		if(energy >= 0) 
+		{
 			if(currentKWH - energy < 0)
 			{
 				currentKWH = 0;
@@ -61,7 +62,7 @@ public class Battery
 	{
 		if(powerKW > 0)
 		{
-			return Math.round(60 * ((currentKWH / powerKW)));
+			return (int) (60 * ((currentKWH / powerKW)));
 		}
 		else
 		{

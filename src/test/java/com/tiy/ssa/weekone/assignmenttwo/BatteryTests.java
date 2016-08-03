@@ -74,6 +74,20 @@ public class BatteryTests
 	}
 	
 	@Test
+	public void testBatteryDischargesCorrectlyWhenEmpty() throws Exception
+	{
+//		Test to make sure an empty battery will not discharge any further
+		testBattery = new Battery(0);
+		assertEquals(0, testBattery.discharge(50), 0.01);
+//		Test to make sure a full or partially charged battery will only 
+//		discharge to zero when an attempt is made to discharge it further than
+//		the current charge left in the battery
+		testBattery = new Battery(100);
+		assertEquals(0, testBattery.discharge(200), 0.01);
+		
+	}
+	
+	@Test
 	public void testBatteryPrecisionAfterCyclingRepeatedly() throws Exception
 	{
 //		Repeatedly charge and discharge the battery with slightly different values
@@ -101,6 +115,7 @@ public class BatteryTests
 		assertEquals(30, testBattery.howLong(200));
 		assertEquals(50, testBattery.howLong(120));
 		assertEquals(45, testBattery.howLong(133.3f));
+		assertEquals(42, testBattery.howLong(140));
 	}
 	
 	@Test
