@@ -66,7 +66,7 @@ public class PigLatinTranslator
 		{
 			String firstTwoLetters = (s.length() == 2) ? s.substring(0,2) + "ay" : s.substring(0,2).toLowerCase() + "ay";
 			String thirdLetter = (s.length() > 2) ? (s.matches("^[A-Z].*") ? s.substring(2,3).toUpperCase() : s.substring(2,3)) : "";
-			String restOfWord = (s.length() > 2) ? s.substring(3) : "";
+			String restOfWord = (s.length() > 3) ? s.substring(3) : "";
 
 			return (thirdLetter + restOfWord + firstTwoLetters);
 		}
