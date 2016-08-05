@@ -33,7 +33,6 @@ public class PigLatinTranslator
 		
 		for(String s: translatedWords)
 		{
-			
 			translatedText += s;
 			if(numberOfWords > 1)
 			{
@@ -46,7 +45,7 @@ public class PigLatinTranslator
 	}
 
 	private String translateWord(String s)
-	{
+	{	
 		if(s.matches("^[aeiouAEIOU].*"))
 		{
 			String firstLetter = (s.substring(0,1).matches("[A-Z]")) ? s.substring(0,1).toUpperCase() : s.substring(0,1);
@@ -70,10 +69,5 @@ public class PigLatinTranslator
 
 			return (thirdLetter + restOfWord + firstTwoLetters);
 		}
-
 	}
-	
-	
-	
-
 }
