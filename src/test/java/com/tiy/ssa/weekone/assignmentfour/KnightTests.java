@@ -8,7 +8,6 @@ import junit.framework.Assert;
 
 public class KnightTests
 {
-//	Knight testKnight = new Knight();
 
 	@Test
 	public void testThatKnightsCurrentPositionIsStartingPositionIfNoMovesMade()
@@ -22,20 +21,44 @@ public class KnightTests
 	{
 		Knight testKnight = new Knight();
 		String initialLocation = testKnight.getPosition();
-		testKnight.lazyMove();
+		testKnight.move();
+		System.out.println(testKnight.getPosition());
+		System.out.println("");
 		String finalLocation = testKnight.getPosition();
 		assertNotEquals(initialLocation, finalLocation);
 	}
 	
 	@Test 
-	public void testThatKnightDoesNotBackTrack()
+	public void testThatKnightDoesNotBackTrackAfterTwoMoves()
 	{
 		Knight testKnight = new Knight();
 		String initialLocation = testKnight.getPosition();
-		testKnight.lazyMove();
-		testKnight.lazyMove();
+		testKnight.move();
+		System.out.println(testKnight.getPosition());
+		testKnight.move();
+		System.out.println(testKnight.getPosition());
+		System.out.println("");
 		String finalLocation = testKnight.getPosition();
-			
+		
+		assertNotEquals(initialLocation, finalLocation);
+	}
+	
+	@Test
+	public void testThatKnightDoesNotBackTrackAfterThreeMoves()
+	{	
+		Knight testKnight = new Knight();
+		testKnight.move();
+		System.out.println("Three Moves");
+		System.out.println(testKnight.getPosition());
+		System.out.println("");
+		String initialLocation = testKnight.getPosition();
+		testKnight.move();
+		System.out.println(testKnight.getPosition());
+		testKnight.move();
+		System.out.println(testKnight.getPosition());
+		System.out.println("");
+		String finalLocation = testKnight.getPosition();
+		
 		assertNotEquals(initialLocation, finalLocation);
 	}
 	
@@ -44,17 +67,54 @@ public class KnightTests
 	{
 		Knight testKnight = new Knight();
 		String initialLocation = testKnight.getPosition();
+		testKnight.move();
+		System.out.println(testKnight.getPosition());
+		testKnight.move();
+		System.out.println(testKnight.getPosition());
+		testKnight.move();
+		System.out.println(testKnight.getPosition());
+		testKnight.move();
+		System.out.println(testKnight.getPosition());
+		System.out.println("");
+		String finalLocation = testKnight.getPosition();
+		
+		assertEquals(initialLocation, finalLocation);
+			
+	}
+	
+	@Test
+	public void testLazyMove()
+	{
+		Knight testKnight = new Knight();
+		String initialLocation = testKnight.getPosition();
+		System.out.println(testKnight.getPosition());
 		testKnight.lazyMove();
+		System.out.println(testKnight.getPosition());
 		testKnight.lazyMove();
+		System.out.println(testKnight.getPosition());
 		testKnight.lazyMove();
+		System.out.println(testKnight.getPosition());
 		testKnight.lazyMove();
+		System.out.println(testKnight.getPosition());
+		System.out.println("");
 		String finalLocation = testKnight.getPosition();
 		
 		assertEquals(initialLocation, finalLocation);
 		
-		for(Location l: testKnight.moves)
-		{
-			System.out.println(l.getLocation());
-		}
+		initialLocation = testKnight.getPosition();
+		System.out.println(testKnight.getPosition());
+		testKnight.lazyMove();
+		System.out.println(testKnight.getPosition());
+		testKnight.lazyMove();
+		System.out.println(testKnight.getPosition());
+		testKnight.lazyMove();
+		System.out.println(testKnight.getPosition());
+		testKnight.lazyMove();
+		System.out.println(testKnight.getPosition());
+		finalLocation = testKnight.getPosition();
+		
+		assertEquals(initialLocation, finalLocation);
 	}
+	
+	
 }
