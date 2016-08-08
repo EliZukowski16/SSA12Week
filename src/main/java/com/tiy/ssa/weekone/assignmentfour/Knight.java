@@ -100,7 +100,7 @@ public class Knight
             }
         }
 
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 3; j++)
         {
             if (!firstMove)
             {
