@@ -10,11 +10,28 @@ public class Location
         this.y = y;
     }
 
-    // @Override
-    // public boolean equals(Location testLocation)
-    // {
-    //
-    // }
+ 
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        
+        if(obj == this)
+        {
+            return true;
+        }
+        
+        if(!(obj instanceof Location))
+        {
+            return false;
+        }
+        
+        Location testLocation = (Location) obj;
+        
+        return this.getLocation().equals(testLocation.getLocation());
+    }
+
+
 
     public Location offset(int x, int y)
     {

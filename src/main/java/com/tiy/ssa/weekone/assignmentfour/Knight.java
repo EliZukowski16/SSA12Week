@@ -26,7 +26,7 @@ public class Knight
         moves.add(startingLocation);
     }
 
-    public void move()
+    void move()
     {
         boolean firstMove;
         double sumScale;
@@ -224,9 +224,14 @@ public class Knight
         }
     }
 
-    public String getPosition()
+    public String getCurrentPosition()
     {
         return currentLocation.getLocation();
+    }
+    
+    public String getHomePosition()
+    {
+        return startingLocation.getLocation();
     }
 
 }
