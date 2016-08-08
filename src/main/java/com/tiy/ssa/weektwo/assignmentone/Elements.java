@@ -8,7 +8,7 @@ public class Elements
     private final Double atomicWeight;
     private final Double meltingPoint;
     private final Double boilingPoint;
-    private State currentState;
+    private Double currentTemperature;
 
     public enum State
     {
@@ -24,8 +24,7 @@ public class Elements
         this.atomicWeight = atomicWeight;
         this.meltingPoint = meltingPoint;
         this.boilingPoint = boilingPoint;
-
-        this.currentState = changeTemperature(currentTemperature);
+        this.currentTemperature = currentTemperature;
     }
 
     public Elements(String elementName, String elementSymbol, Integer atomicNumber, Double atomicWeight,
@@ -35,26 +34,31 @@ public class Elements
 
     }
 
-    public State changeTemperature(double temperature)
+    public State changeTemperature(double currentTemperature)
     {
-        if (temperature < meltingPoint)
+        this.currentTemperature = currentTemperature;
+        
+        if (currentTemperature < meltingPoint)
         {
-            this.currentState = State.SOLID;
             return State.SOLID;
         }
-        if (temperature < boilingPoint)
+        if (currentTemperature < boilingPoint)
         {
-            this.currentState = State.LIQUID;
             return State.LIQUID;
         }
-        this.currentState = State.GAS;
+        
         return State.GAS;
 
     }
 
+    public Double getCurrentTemperature()
+    {
+        return currentTemperature;
+    }
+
     public State getCurrentState()
     {
-        return currentState;
+        return changeTemperature(this.currentTemperature);
     }
 
     public String getElementName()

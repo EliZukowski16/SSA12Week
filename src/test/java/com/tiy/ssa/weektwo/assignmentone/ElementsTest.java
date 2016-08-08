@@ -52,7 +52,7 @@ public class ElementsTest
     public void testSeparateByStateAtSTP()
     {
         // Separate the elements by their state at STP (25 deg C, 1 atm)
-        List<Elements> gases = new ArrayList<>();
+        List<Elements> gasses = new ArrayList<>();
         List<Elements> liquids = new ArrayList<>();
         List<Elements> solids = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class ElementsTest
                 liquids.add(e);
                 break;
             case GAS:
-                gases.add(e);
+                gasses.add(e);
                 break;
             }
         }
@@ -88,8 +88,8 @@ public class ElementsTest
             assertTrue(e.getCurrentState().equals(State.LIQUID));
         }
 
-        assertEquals(3, gases.size());
-        for (Elements e : gases)
+        assertEquals(3, gasses.size());
+        for (Elements e : gasses)
         {
             assertFalse(e.getCurrentState().equals(State.SOLID));
             assertTrue(e.getCurrentState().equals(State.GAS));
@@ -98,25 +98,25 @@ public class ElementsTest
     }
 
     @Test
-    public void testExcludeGasesAtSTP()
+    public void testExcludeGassesAtSTP()
     {
-        // Separate out the gases at STP from the liquids and solids
-        List<Elements> nonGases = new ArrayList<>();
+        // Separate out the gasses at STP from the liquids and solids
+        List<Elements> nonGasses = new ArrayList<>();
 
         for (Elements e : testElements)
         {
             if (e.getCurrentState() != State.GAS)
             {
-                nonGases.add(e);
+                nonGasses.add(e);
             }
         }
 
-        assertEquals(7, nonGases.size());
-        assertFalse(nonGases.contains(hydrogen));
-        assertFalse(nonGases.contains(helium));
-        assertFalse(nonGases.contains(nitrogen));
+        assertEquals(7, nonGasses.size());
+        assertFalse(nonGasses.contains(hydrogen));
+        assertFalse(nonGasses.contains(helium));
+        assertFalse(nonGasses.contains(nitrogen));
 
-        for (Elements e : nonGases)
+        for (Elements e : nonGasses)
         {
             assertFalse(e.getCurrentState().equals(State.GAS));
             assertTrue(e.getCurrentState().equals(State.SOLID) || e.getCurrentState().equals(State.LIQUID));
@@ -132,7 +132,7 @@ public class ElementsTest
         // new states.
         List<Elements> solids = new ArrayList<>();
         List<Elements> liquids = new ArrayList<>();
-        List<Elements> gases = new ArrayList<>();
+        List<Elements> gasses = new ArrayList<>();
 
         for (Elements e : testElements)
         {
@@ -145,7 +145,7 @@ public class ElementsTest
                 liquids.add(e);
                 break;
             case GAS:
-                gases.add(e);
+                gasses.add(e);
                 break;
             }
         }
@@ -170,8 +170,8 @@ public class ElementsTest
             assertTrue(e.getCurrentState().equals(State.LIQUID));
         }
 
-        assertEquals(3, gases.size());
-        for (Elements e : gases)
+        assertEquals(3, gasses.size());
+        for (Elements e : gasses)
         {
             assertFalse(e.getCurrentState().equals(State.SOLID));
             assertTrue(e.getCurrentState().equals(State.GAS));
@@ -188,7 +188,7 @@ public class ElementsTest
         // change to a solid at this temperature
         List<Elements> solids = new ArrayList<>();
         List<Elements> liquids = new ArrayList<>();
-        List<Elements> gases = new ArrayList<>();
+        List<Elements> gasses = new ArrayList<>();
 
         for (Elements e : testElements)
         {
@@ -201,7 +201,7 @@ public class ElementsTest
                 liquids.add(e);
                 break;
             case GAS:
-                gases.add(e);
+                gasses.add(e);
                 break;
             }
         }
@@ -222,13 +222,15 @@ public class ElementsTest
             assertTrue(e.getCurrentState().equals(State.LIQUID));
         }
 
-        assertEquals(0, gases.size());
-        for (Elements e : gases)
+        assertEquals(0, gasses.size());
+        for (Elements e : gasses)
         {
             assertFalse(e.getCurrentState().equals(State.SOLID));
             assertTrue(e.getCurrentState().equals(State.GAS));
             assertFalse(e.getCurrentState().equals(State.LIQUID));
         }
+        
+        
     }
 
     @Test
@@ -237,10 +239,10 @@ public class ElementsTest
         // Set the temperature to 10,000 deg C and change the
         // state of all elements
         // based upon their melting and boiling points. All elements should
-        // change to a solid at this temperature
+        // change to a gas at this temperature
         List<Elements> solids = new ArrayList<>();
         List<Elements> liquids = new ArrayList<>();
-        List<Elements> gases = new ArrayList<>();
+        List<Elements> gasses = new ArrayList<>();
 
         for (Elements e : testElements)
         {
@@ -253,7 +255,7 @@ public class ElementsTest
                 liquids.add(e);
                 break;
             case GAS:
-                gases.add(e);
+                gasses.add(e);
                 break;
             }
         }
@@ -274,12 +276,55 @@ public class ElementsTest
             assertTrue(e.getCurrentState().equals(State.LIQUID));
         }
 
-        assertEquals(10, gases.size());
-        for (Elements e : gases)
+        assertEquals(10, gasses.size());
+        for (Elements e : gasses)
         {
             assertFalse(e.getCurrentState().equals(State.SOLID));
             assertTrue(e.getCurrentState().equals(State.GAS));
             assertFalse(e.getCurrentState().equals(State.LIQUID));
+        }
+    }
+
+    @Test
+    public void testKeepElementsWithAMassBetween30and50()
+    {
+        // Keeps elements in place that have an atomic weight greater than 30
+        testElements.removeIf(e -> (e.getAtomicWeight() < 30 || e.getAtomicWeight() > 50));
+
+        assertEquals(1, testElements.size());
+
+        assertTrue(testElements.contains(sulfur));
+        assertFalse(testElements.contains(hydrogen));
+        assertFalse(testElements.contains(nitrogen));
+        assertFalse(testElements.contains(mercury));
+        assertFalse(testElements.contains(bromine));
+        
+        for(Elements e : testElements)
+        {
+            assertTrue(e.getAtomicWeight() > 30);
+            assertTrue(e.getAtomicWeight() < 50);
+        }
+    }
+
+    @Test
+    public void testRemoveElementsThatAreLiquidsAtSTP()
+    {
+        // Remove elements that are liquids at STP
+        testElements.removeIf(e -> e.getCurrentState() == State.LIQUID);
+
+        assertEquals(8, testElements.size());
+
+        assertTrue(testElements.contains(sodium));
+        assertTrue(testElements.contains(helium));
+        assertTrue(testElements.contains(gallium));
+        assertFalse(testElements.contains(bromine));
+        assertFalse(testElements.contains(mercury));
+        
+        for(Elements e : testElements)
+        {
+            assertTrue(e.getCurrentState() == State.GAS || e.getCurrentState() == State.SOLID);
+            assertFalse(e.getCurrentState() == State.LIQUID);
+            assertTrue(e.getBoilingPoint() < 25 || e.getMeltingPoint() > 25);
         }
     }
 
