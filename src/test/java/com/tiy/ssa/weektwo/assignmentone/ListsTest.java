@@ -11,9 +11,6 @@ import org.junit.Test;
 
 public class ListsTest
 {
-    
-    Lists listTesting = new Lists();
-    
     List<String> testList1 = new ArrayList<>();
     List<String> testList2 = new ArrayList<>();
     
