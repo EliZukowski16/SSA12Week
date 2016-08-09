@@ -36,15 +36,15 @@ public class Lists
                     break;
                 }
                 
-                if(s.length() > sortedList.get(i).length())
-                {
-                    sortedList.add(i, s);
-                    break;
-                }
-                
                 if(i == sortedList.size())
                 {
                     sortedList.add(s);
+                    break;
+                }
+                
+                if(s.length() > sortedList.get(i).length())
+                {
+                    sortedList.add(i, s);
                     break;
                 }
             }

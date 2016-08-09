@@ -87,8 +87,6 @@ public class ListsTest
         {
             assertTrue(sortedList.get(i).length() >= sortedList.get(i + 1).length());
         }
-        
-        
     }
 
 }
