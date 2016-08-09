@@ -44,7 +44,6 @@ public class ListsTest
     {   
         
         List<String> mergedList = Lists.match(testList1, testList2);
-        List<String> solvedList = new ArrayList<>();
         
         assertTrue(testList1.containsAll(mergedList));
         assertTrue(testList2.containsAll(mergedList));
@@ -71,8 +70,41 @@ public class ListsTest
             {
                 assertFalse(mergedList.contains(s));
             }
+        }      
+    }
+    
+    @Test
+    public void testMergingOfTwoListsWithSets()
+    {   
+        
+        List<String> mergedList = Lists.matchSet(testList1, testList2);
+        
+        assertTrue(testList1.containsAll(mergedList));
+        assertTrue(testList2.containsAll(mergedList));
+        
+        for(String s : testList1)
+        {
+            if(testList2.contains(s))
+            {
+                assertTrue(mergedList.contains(s));
+            }
+            else
+            {
+                assertFalse(mergedList.contains(s));
+            }
         }
-                
+        
+        for(String s : testList2)
+        {
+            if(testList1.contains(s))
+            {
+                assertTrue(mergedList.contains(s));
+            }
+            else
+            {
+                assertFalse(mergedList.contains(s));
+            }
+        }      
     }
     
     @Test
