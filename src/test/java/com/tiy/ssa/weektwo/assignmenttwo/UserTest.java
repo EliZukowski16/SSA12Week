@@ -84,6 +84,11 @@ public class UserTest
                 assertTrue(childrenTest1.contains(new Name(u.getFirstName(), u.getLastName())));
                 assertTrue(childrenTest2.contains(new Name(u.getFirstName(), u.getLastName())));
             }
+            else
+            {
+                assertFalse(childrenTest1.contains(new Name(u.getFirstName(), u.getLastName())));
+                assertFalse(childrenTest2.contains(new Name(u.getFirstName(), u.getLastName())));
+            }
         }  
     }
     
