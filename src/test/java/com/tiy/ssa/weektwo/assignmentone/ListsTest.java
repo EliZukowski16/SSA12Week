@@ -70,7 +70,22 @@ public class ListsTest
             {
                 assertFalse(mergedList.contains(s));
             }
-        }      
+        } 
+        
+        for(int i = 0; i < mergedList.size(); i++)
+        {
+            for(int j = 0; j < mergedList.size(); j++)
+            {
+                if(i == j)
+                {
+                    assertTrue(mergedList.get(i).equals(mergedList.get(j)));
+                }
+                else
+                {
+                    assertFalse(mergedList.get(i).equals(mergedList.get(j)));
+                }
+            }
+        }
     }
     
     @Test
@@ -104,7 +119,22 @@ public class ListsTest
             {
                 assertFalse(mergedList.contains(s));
             }
-        }      
+        }   
+        
+        for(int i = 0; i < mergedList.size(); i++)
+        {
+            for(int j = 0; j < mergedList.size(); j++)
+            {
+                if(i == j)
+                {
+                    assertTrue(mergedList.get(i).equals(mergedList.get(j)));
+                }
+                else
+                {
+                    assertFalse(mergedList.get(i).equals(mergedList.get(j)));
+                }
+            }
+        }
     }
     
     @Test
