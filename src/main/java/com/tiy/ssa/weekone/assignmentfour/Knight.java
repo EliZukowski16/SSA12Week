@@ -89,6 +89,10 @@ public class Knight
                 {
                     nextMoveWeight.add(0.0);
                 }
+                else if (distance == 0)
+                {
+                    nextMoveWeight.add(100000000.0);
+                }
                 else
                 {
                     nextMoveWeight.add((1 / distance));
