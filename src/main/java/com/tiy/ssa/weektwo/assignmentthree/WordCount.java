@@ -1,10 +1,16 @@
 package com.tiy.ssa.weektwo.assignmentthree;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
+
+
 
 public class WordCount
 {
@@ -35,54 +41,6 @@ public class WordCount
 
     }
 
-    public List<String> top(int many)
-    {
-        return this.getWordSubset(this.getWordCounts(), Direction.TOP, many);
-    }
-
-    public List<String> bottom(int many)
-    {
-        return this.getWordSubset(this.getWordCounts(), Direction.BOTTOM, many);
-    }
-
-    private List<String> getWordSubset(Map<String, Integer> wordOccurrences, Direction direction, int many)
-    {
-        List<String> wordsToReturn = new ArrayList<>();
-
-        for (int i = 0; i < many; i++)
-        {
-            int wordOccurrence = direction == Direction.BOTTOM ? getMaxWordOccurrence() : getMinWordOccurrence();
-            String word = "";
-
-            for (Entry e : wordOccurrences.entrySet())
-            {
-                switch (direction)
-                {
-                case BOTTOM:
-                    if (((int) e.getValue() <= wordOccurrence))
-                    {
-                        wordOccurrence = (int) e.getValue();
-                        word = String.valueOf(e.getKey());
-                    }
-                    break;
-                case TOP:
-                    if (((int) e.getValue() >= wordOccurrence))
-                    {
-                        wordOccurrence = (int) e.getValue();
-                        word = String.valueOf(e.getKey());
-                    }
-                    break;
-                }
-            }
-
-            wordsToReturn.add(word);
-            wordOccurrences.remove(word);
-        }
-
-        return wordsToReturn;
-
-    }
-
     private Map<String, Integer> getWordCounts()
     {
         Map<String, Integer> wordOccurrences = new HashMap<>();
@@ -94,35 +52,54 @@ public class WordCount
 
         return wordOccurrences;
     }
-
-    private int getMaxWordOccurrence()
+    
+    private Map<String, Integer> sortWords(Map<String, Integer> wordOccurrences, Direction direction)
     {
-        int maxWordOccurrence = 0;
-
-        for (String s : allWords)
+        Map<String, Integer> sortedWords = new LinkedHashMap<>();
+        Stream<Map.Entry<String, Integer>> wordStream = wordOccurrences.entrySet().stream();
+        
+        if(direction == Direction.TOP)
         {
-            if (this.count(s) >= maxWordOccurrence)
-            {
-                maxWordOccurrence = count(s);
-            }
+            wordStream.sorted(Map.Entry.comparingByValue((Comparator.reverseOrder())))
+            .forEachOrdered(e -> sortedWords.put(e.getKey(), e.getValue()));
         }
-
-        return maxWordOccurrence;
+        else
+        {
+            wordStream.sorted(Map.Entry.comparingByValue(Comparator.naturalOrder()))
+                    .forEachOrdered(e -> sortedWords.put(e.getKey(), e.getValue()));
+        }
+        
+        return sortedWords;
     }
-
-    private int getMinWordOccurrence()
+    
+    public List<String> top(int many)
     {
-        int minWordOccurrence = this.getMaxWordOccurrence();
-
-        for (String s : allWords)
+        List<String> sortedWords = new ArrayList<>();
+        Map<String, Integer> sortedMap = sortWords(getWordCounts(), Direction.TOP);
+        
+        Iterator<Entry<String, Integer>> wordIterator = sortedMap.entrySet().iterator();
+        
+        for(int i = 0; i < many; i++)
         {
-            if (this.count(s) <= minWordOccurrence)
-            {
-                minWordOccurrence = count(s);
-            }
+            sortedWords.add(wordIterator.next().getKey());
         }
-
-        return minWordOccurrence;
+        
+        return sortedWords;
+    }
+    
+    public List<String> bottom(int many)
+    {
+        List<String> sortedWords = new ArrayList<>();
+        Map<String, Integer> sortedMap = sortWords(getWordCounts(), Direction.BOTTOM);
+        
+        Iterator<Entry<String, Integer>> wordIterator = sortedMap.entrySet().iterator();
+        
+        for(int i = 0; i < many; i++)
+        {
+            sortedWords.add(wordIterator.next().getKey());
+        }
+        
+        return sortedWords;
     }
 
     public String source()

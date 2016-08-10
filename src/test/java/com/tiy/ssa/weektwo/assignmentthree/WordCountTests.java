@@ -11,7 +11,9 @@ import org.junit.Test;
 public class WordCountTests
 {
 
-    static String SOURCE = "one two two three three three four four four four";
+    static String SOURCE = "one two two three three three four four four four five five five five five six six six six six six "
+            + "seven seven seven seven seven seven seven eight eight eight eight eight eight eight eight "
+            + "nine nine nine nine nine nine nine nine nine ten ten ten ten ten ten ten ten ten ten";
     WordCount wordCount = new WordCount();
 
     @Before
@@ -32,8 +34,8 @@ public class WordCountTests
     {
         List<String> testWords = new ArrayList<>();
 
-        testWords.add("four");
-        testWords.add("three");
+        testWords.add("ten");
+        testWords.add("nine");
         
         assertEquals(2, this.wordCount.bottom(2).size());
         assertEquals(testWords, this.wordCount.top(2));
@@ -60,6 +62,12 @@ public class WordCountTests
         assertEquals(2, this.wordCount.count("two"));
         assertEquals(3, this.wordCount.count("three"));
         assertEquals(4, this.wordCount.count("four"));
+    }
+    
+    @Test
+    public void testThatSourceMatchesWhatWordCountHas()
+    {
+        assertTrue(wordCount.source().equals(SOURCE.toLowerCase()));
     }
 
 }
