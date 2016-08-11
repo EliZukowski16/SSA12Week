@@ -57,18 +57,18 @@ public class WordCount
     {
         Map<String, Integer> sortedWords = new LinkedHashMap<>();
         Stream<Map.Entry<String, Integer>> wordStream = wordOccurrences.entrySet().stream();
-        
-        if(direction == Direction.TOP)
+
+        if (direction == Direction.TOP)
         {
             wordStream.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .forEachOrdered(e -> sortedWords.put(e.getKey(), e.getValue()));
+                    .forEachOrdered(e -> sortedWords.put(e.getKey(), e.getValue()));
         }
         else
         {
             wordStream.sorted(Map.Entry.comparingByValue(Comparator.naturalOrder()))
                     .forEachOrdered(e -> sortedWords.put(e.getKey(), e.getValue()));
         }
-        
+
         return sortedWords;
     }
     

@@ -2,7 +2,10 @@ package com.tiy.ssa.weekone.assignmentfour;
 
 import static org.junit.Assert.*;
 
+import java.math.BigInteger;
+
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class MathsTest
 {
@@ -69,5 +72,16 @@ public class MathsTest
         assertEquals((int) (Math.log10(255) / Math.log10(3)), Maths.logBaseThree(255));
         assertEquals((int) (Math.log10(856421315) / Math.log10(3)), Maths.logBaseThree(856421315));
     }
-
+    
+    @Test
+    public void testFactorial()
+    {
+        Maths.clearFactorialMap();
+        
+        assertEquals(BigInteger.valueOf(1), Maths.factorial(1));
+        assertEquals(BigInteger.valueOf(1), Maths.factorial(0));
+        assertEquals(BigInteger.valueOf(2432902008176640000l), Maths.factorial(20));
+        assertEquals(BigInteger.valueOf(40320), Maths.factorial(8));
+        assertEquals(BigInteger.valueOf(3628800), Maths.factorial(10));
+    }
 }

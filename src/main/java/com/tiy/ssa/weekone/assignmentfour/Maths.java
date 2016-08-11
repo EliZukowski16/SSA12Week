@@ -1,7 +1,13 @@
 package com.tiy.ssa.weekone.assignmentfour;
 
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Maths
 {
+    private static final Map<Integer, BigInteger> FACTORIALMAP = new HashMap<>();
+    
     public static int squareRoot(int number)
     {
         int squareValue = 0;
@@ -65,5 +71,30 @@ public class Maths
         }
 
         return returnValue - 1;
+    }
+    
+    private static BigInteger calculateFactorial(int number)
+    {
+        BigInteger factorial = BigInteger.ONE;
+        
+        for(int i = 1; i <= number; i++)
+        {
+            factorial = factorial.multiply(BigInteger.valueOf(i));
+            FACTORIALMAP.putIfAbsent(i, factorial);
+        }
+        
+        return factorial;
+    }
+    
+    public static BigInteger factorial(int number)
+    {
+        FACTORIALMAP.computeIfAbsent(number, f -> calculateFactorial(f));
+        
+        return FACTORIALMAP.get(number);
+    }
+    
+    public static void clearFactorialMap()
+    {
+        FACTORIALMAP.clear();
     }
 }
