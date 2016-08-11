@@ -60,7 +60,7 @@ public class WordCount
         
         if(direction == Direction.TOP)
         {
-            wordStream.sorted(Map.Entry.comparingByValue((Comparator.reverseOrder())))
+            wordStream.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
             .forEachOrdered(e -> sortedWords.put(e.getKey(), e.getValue()));
         }
         else
