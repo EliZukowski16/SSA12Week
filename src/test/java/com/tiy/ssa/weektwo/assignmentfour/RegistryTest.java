@@ -2,6 +2,7 @@ package com.tiy.ssa.weektwo.assignmentfour;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -65,11 +66,30 @@ public class RegistryTest
     
     
     @Test
-    public void testThatAddPersonAddsAPerson()
+    public void testCanAddAndGetPersonFromRegistry()
     {
         assertTrue(testRegistry.add(testPersonProgenitor));
         assertFalse(testRegistry.add(testPersonProgenitor));
         assertEquals(testRegistry.get(testPersonProgenitor.getSsn()), testPersonProgenitor);     
+    }
+    
+    @Test
+    public void testThatChildrenGetAddedToPeopleCorrectly()
+    {
+        testPersonProgenitor.addChild(testPerson1stGenOne);
+        
+        assertTrue(testPersonProgenitor.getChildren().contains(testPerson1stGenOne));
+        assertFalse(testPersonProgenitor.getChildren().contains(testPerson1stGenTwo));
+        
+        List<Person> testChildren = new ArrayList<>();
+        
+        testChildren.add(testPerson1stGenTwo);
+        testChildren.add(testPerson1stGenThree);
+        testChildren.add(testPerson1stGenOne);
+        
+        assertEquals(2, testPersonProgenitor.addChildren(testChildren));
+        assertTrue(testPersonProgenitor.getChildren().containsAll(testChildren));
+        
     }
     
 

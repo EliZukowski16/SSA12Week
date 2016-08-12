@@ -1,6 +1,7 @@
 package com.tiy.ssa.weektwo.assignmentfour;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,12 @@ public class Registry
     
     public Person oldestLivingRelative(SocialSecurityNumber ssn)
     {
+        List<Person> ancestors = this.ancestors(ssn);
+        
+        if(ancestors.isEmpty())
+            return registry.get(ssn);
+
+        return ancestors.stream().filter(s -> s.isAlive()).max(Comparator.comparing(Person::age)).get();
 
     }
        
