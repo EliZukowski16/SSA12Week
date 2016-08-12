@@ -278,6 +278,8 @@ public class Registry
         
         oneAncestors.addAll(ancestors(one));
         twoAncestors.addAll(ancestors(two));
+        oneAncestors.add(registry.get(one));
+        twoAncestors.add(registry.get(two));
         
         List<Person> commonAncestors = new ArrayList<>();
         
