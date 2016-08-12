@@ -6,7 +6,7 @@ public class SocialSecurityNumber
 
     public SocialSecurityNumber(String data)
     {
-        this.data = data;
+        this.data = data.replaceAll("[\\s\\-]+", "");
     }
     
     public String last4Digits()
