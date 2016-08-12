@@ -445,8 +445,47 @@ public class RegistryTest
     }
     
     @Test
-    public void tests()
+    public void testAncestors()
     {
-        System.out.println(registry.size());
+        assertEquals(7, registry.ancestors(new SocialSecurityNumber("412345670")).size());
+        assertEquals(8, registry.ancestors(new SocialSecurityNumber("512345670")).size());
+        assertEquals(0, registry.ancestors(new SocialSecurityNumber("112345674")).size());
+    }
+    
+    @Test
+    public void testProgenitor()
+    {
+        assertEquals(registry.get(new SocialSecurityNumber("012345678")), registry.progenitor(new SocialSecurityNumber("512345671")));
+        assertEquals(registry.get(new SocialSecurityNumber("012345678")), registry.progenitor(new SocialSecurityNumber("412345671")));
+        assertEquals(registry.get(new SocialSecurityNumber("012345678")), registry.progenitor(new SocialSecurityNumber("212345670")));
+        assertEquals(registry.get(new SocialSecurityNumber("112345674")), registry.progenitor(new SocialSecurityNumber("112345674")));
+    }
+    
+    @Test
+    public void testDescendants()
+    {
+        assertEquals(0, registry.descendants(new SocialSecurityNumber("412345670")).size());
+        assertEquals(6, registry.descendants(new SocialSecurityNumber("212345670")).size());
+        assertEquals(15, registry.descendants(new SocialSecurityNumber("012345678")).size());
+    }
+    
+    @Test
+    public void testYoungestDescendant()
+    {
+        assertEquals(registry.get(new SocialSecurityNumber("512345671")), registry.youngestDescendant(new SocialSecurityNumber("212345670")));
+        assertEquals(registry.get(new SocialSecurityNumber("412345672")), registry.youngestDescendant(new SocialSecurityNumber("212345671")));
+    }
+    
+    @Test
+    public void testOldestLivingRelative()
+    {
+        assertEquals(registry.get(new SocialSecurityNumber("212345670")), registry.oldestLivingRelative(new SocialSecurityNumber("412345675")));
+        assertEquals(registry.get(new SocialSecurityNumber("312345670")), registry.oldestLivingRelative(new SocialSecurityNumber("412345671")));
+    }
+    
+    @Test
+    public void testAreTwoPeopleRelated()
+    {
+        assertTrue(registry.areRelated(new SocialSecurityNumber("312345670"), new SocialSecurityNumber("212345672")));
     }
 }
