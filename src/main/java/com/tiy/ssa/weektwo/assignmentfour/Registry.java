@@ -3,9 +3,12 @@ package com.tiy.ssa.weektwo.assignmentfour;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.tiy.ssa.weektwo.assignmentthree.SocialSecurityNumber;
 
@@ -15,11 +18,39 @@ public class Registry
 
     public Person progenitor(SocialSecurityNumber ssn)
     {
+        List<Person> ancestors = this.ancestors(ssn);
+
+        if (ancestors.isEmpty())
+            return registry.get(ssn);
+
+        return ancestors.stream().max(Comparator.comparing(Person::age)).get();
 
     }
 
     public List<Person> descendants(SocialSecurityNumber ssn)
     {
+        Person person = registry.get(ssn);
+        List<Person> descendants = new ArrayList<>();
+        
+        descendants.add(person);
+        
+        for (int i = 0; i < descendants.size(); i++)
+        {
+            Person testPerson = descendants.get(i);
+            
+            List<Person> testChildren = new ArrayList<>(testPerson.getChildren());
+
+            registry.entrySet().stream()
+                    .filter(s -> (testChildren.contains(s.getValue())))
+                    .sorted(Map.Entry.comparingByValue(Comparator.comparingInt(Person::age)))
+                    .map(Entry::getValue)
+                    .forEachOrdered(s -> {if(!descendants.contains(s)) {descendants.add(s);}});
+                    
+        }
+        
+        descendants.remove(person);
+        
+        return descendants;
 
     }
 
@@ -30,25 +61,16 @@ public class Registry
 
         ancestors.add(person);
 
-        // for(int i = 0; i < ancestors.size(); i++)
-        // {
-        // for(Entry e : registry.entrySet())
-        // {
-        // Person testPerson = registry.get(e.getKey());
-        // if(testPerson.getChildren().contains(ancestors.get(i)) &&
-        // !(ancestors.contains(testPerson)))
-        // ancestors.add(testPerson);
-        // }
-        // }
-        //
-
         for (int i = 0; i < ancestors.size(); i++)
         {
             Person testPerson = ancestors.get(i);
 
-            registry.entrySet().stream().filter(s -> s.getValue().getChildren().contains(testPerson))
-                    // .sorted(Map.Entry.comparingByValue(Comparator.comparingInt(Person::age)))
-                    .map(Entry::getValue).forEachOrdered(s -> ancestors.add(s));
+            registry.entrySet().stream()
+                    .filter(s -> s.getValue().getChildren().contains(testPerson))
+                    .sorted(Map.Entry.comparingByValue(Comparator.comparingInt(Person::age)))
+                    .map(Entry::getValue)
+                    .forEachOrdered(s -> {if(!ancestors.contains(s)) {ancestors.add(s);}});
+                    
         }
 
         ancestors.remove(person);
@@ -71,17 +93,37 @@ public class Registry
         if(ancestors.isEmpty())
             return registry.get(ssn);
 
-        return ancestors.stream().filter(s -> s.isAlive()).max(Comparator.comparing(Person::age)).get();
+        return ancestors.stream()
+                .filter(s -> s.isAlive())
+                .max(Comparator.comparing(Person::age))
+                .get();
 
     }
        
-    public Person youngestDescendant(SocialSecurityNumber one)
+    public Person youngestDescendant(SocialSecurityNumber ssn)
     {
-
+        List<Person> descendants = this.descendants(ssn);
+        
+        if(descendants.isEmpty())
+            return registry.get(ssn);
+        
+        return descendants.stream()
+                .filter(s -> s.isAlive())
+                .min(Comparator.comparing(Person::age))
+                .get();
     }
     
     public boolean areRelated(SocialSecurityNumber one, SocialSecurityNumber two)
     {
+        if(one.equals(two))
+            return true;
+        
+        if(areAncestorsRelated(one, two) || areDescendantsRelated(one,two))
+            return true;
+        
+        return false;
+        
+        
         
     }
     
@@ -94,10 +136,39 @@ public class Registry
     {
         
     }
+    
+    public int size()
+    {
+        return registry.size();
+    }
 
     public static enum Relations
     {
-        PARENT, SIBLING, GRANDPARENT, CHILD, GRANDCHILD, AUNCLE, NIBLING
+        PARENT, CHILD, GRANDPARENT, GRANDCHILD, COUSIN, SIBLING, NIBLING, AUNCLE, NONE;
+    }
+    
+    private boolean areAncestorsRelated(SocialSecurityNumber one, SocialSecurityNumber two)
+    {
+        List<Person> oneAncestors = this.ancestors(one);
+        List<Person> twoAncestors = this.ancestors(two);
+        oneAncestors.retainAll(twoAncestors);
+        
+        if(!oneAncestors.isEmpty())
+            return true;
+        
+        return false;
+    }
+    
+    private boolean areDescendantsRelated(SocialSecurityNumber one, SocialSecurityNumber two)
+    {
+        List<Person> oneDescendants = this.descendants(one);
+        List<Person> twoDescendants = this.descendants(two);
+        oneDescendants.retainAll(twoDescendants);
+        
+        if(!oneDescendants.isEmpty())
+            return true;
+        
+        return false;
     }
 
 }
