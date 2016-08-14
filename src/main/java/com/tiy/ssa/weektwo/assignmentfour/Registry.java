@@ -137,113 +137,27 @@ public class Registry
         if (one.equals(two))
             return Relations.OTHER;
 
-        Person personOne = registry.get(one);
-        Person personTwo = registry.get(two);
-
         List<Person> commonRelatives = commonAncestors(one, two);
-        int oneGeneration = 0;
-        int twoGeneration = 0;
-        boolean oneGenerationNotFound = true;
-        boolean twoGenerationNotFound = true;
 
         if (!commonRelatives.isEmpty())
         {
-            Person youngestCommonRelative = youngestCommonAncestor(one, two);
-            List<Person> children = youngestCommonRelative.getChildren();
 
-            do
-            {
-                for (Person p : children)
-                {
-                    if (p.getChildren().contains(personOne))
-                    {
-                        oneGenerationNotFound = false;
-                    }
-
-                    children.addAll(p.getChildren());
-                }
-
-                oneGeneration++;
-
-            }
-            while (oneGenerationNotFound);
-
-            children = youngestCommonRelative.getChildren();
-            do
-            {
-                for (Person p : children)
-                {
-                    if (p.getChildren().contains(personOne))
-                    {
-                        twoGenerationNotFound = false;
-                    }
-
-                    children.addAll(p.getChildren());
-                }
-
-                twoGeneration++;
-
-            }
-            while (twoGenerationNotFound);
-
-            if (oneGeneration == 2 && twoGeneration == 2)
-            {
+            if (isRelationChild(one, two))
+                return Relations.CHILD;
+            if (isRelationGrandChild(one, two))
+                return Relations.GRANDCHILD;
+            if (isRelationParent(one, two))
+                return Relations.PARENT;
+            if (isRelationGrandParent(one, two))
+                return Relations.GRANDPARENT;
+            if (isRelationSibling(one, two))
+                return Relations.SIBLING;
+            if (isRelationNibling(one, two))
+                return Relations.NIBLING;
+            if (isRelationAuncle(one, two))
+                return Relations.AUNCLE;
+            if (isRelationCousin(one, two))
                 return Relations.COUSIN;
-            }
-
-            if (youngestCommonRelative.getChildren().contains(personOne))
-            {
-                if (youngestCommonRelative.getChildren().contains(personTwo))
-                {
-                    return Relations.SIBLING;
-                }
-                if (personOne.getChildren().contains(personTwo))
-                {
-                    return Relations.CHILD;
-                }
-                List<Person> onesChildren = personOne.getChildren();
-                for (Person p : onesChildren)
-                {
-                    if (p.getChildren().contains(personTwo))
-                    {
-                        return Relations.GRANDCHILD;
-                    }
-                }
-                List<Person> youngestCommonRelativeChildren = youngestCommonRelative.getChildren();
-                for (Person p : youngestCommonRelativeChildren)
-                {
-                    if (p.getChildren().contains(personTwo))
-                    {
-                        return Relations.NIBLING;
-                    }
-                }
-            }
-
-            if (youngestCommonRelative.getChildren().contains(personTwo))
-            {
-                if (personOne.getChildren().contains(personOne))
-                {
-                    return Relations.PARENT;
-                }
-
-                List<Person> twosChildren = personTwo.getChildren();
-                for (Person p : twosChildren)
-                {
-                    if (p.getChildren().contains(personOne))
-                    {
-                        return Relations.GRANDPARENT;
-                    }
-                }
-
-                List<Person> youngestCommonRelativeChildren = youngestCommonRelative.getChildren();
-                for (Person p : youngestCommonRelativeChildren)
-                {
-                    if (p.getChildren().contains(personOne))
-                    {
-                        return Relations.AUNCLE;
-                    }
-                }
-            }
 
             return Relations.OTHER;
         }
@@ -275,17 +189,17 @@ public class Registry
     {
         List<Person> oneAncestors = new ArrayList<>();
         List<Person> twoAncestors = new ArrayList<>();
-        
+
         oneAncestors.addAll(ancestors(one));
         twoAncestors.addAll(ancestors(two));
         oneAncestors.add(registry.get(one));
         twoAncestors.add(registry.get(two));
-        
+
         List<Person> commonAncestors = new ArrayList<>();
-        
-        for(Person p : oneAncestors)
+
+        for (Person p : oneAncestors)
         {
-            if(twoAncestors.contains(p) && !(commonAncestors.contains(p)))
+            if (twoAncestors.contains(p) && !(commonAncestors.contains(p)))
             {
                 commonAncestors.add(p);
             }
@@ -299,15 +213,15 @@ public class Registry
     {
         List<Person> oneDescendants = new ArrayList<>();
         List<Person> twoDescendants = new ArrayList<>();
-        
+
         oneDescendants.addAll(descendants(one));
         twoDescendants.addAll(descendants(two));
-        
+
         List<Person> commonDescendants = new ArrayList<>();
-        
-        for(Person p : commonDescendants)
+
+        for (Person p : commonDescendants)
         {
-            if(twoDescendants.contains(p) && !(commonDescendants.contains(p)))
+            if (twoDescendants.contains(p) && !(commonDescendants.contains(p)))
             {
                 commonDescendants.add(p);
             }
@@ -315,6 +229,170 @@ public class Registry
 
         return oneDescendants.stream().sorted(Comparator.comparingInt(Person::age).reversed())
                 .collect(Collectors.toList());
+    }
+
+    private boolean isRelationChild(SocialSecurityNumber one, SocialSecurityNumber two)
+    {
+        Person youngestCommonRelative = youngestCommonAncestor(one, two);
+        Person personOne = registry.get(one);
+        Person personTwo = registry.get(two);
+
+        if (youngestCommonRelative.equals(personOne))
+        {
+            if (youngestCommonRelative.getChildren().contains(personTwo))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isRelationGrandChild(SocialSecurityNumber one, SocialSecurityNumber two)
+    {
+        Person youngestCommonRelative = youngestCommonAncestor(one, two);
+        Person personOne = registry.get(one);
+        Person personTwo = registry.get(two);
+
+        if (youngestCommonRelative.equals(personOne))
+        {
+            List<Person> onesChildren = personOne.getChildren();
+            for (Person p : onesChildren)
+            {
+                if (p.getChildren().contains(personTwo))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isRelationParent(SocialSecurityNumber one, SocialSecurityNumber two)
+    {
+        Person youngestCommonRelative = youngestCommonAncestor(one, two);
+        Person personOne = registry.get(one);
+        Person personTwo = registry.get(two);
+
+        if (youngestCommonRelative.equals(personTwo))
+        {
+            if (youngestCommonRelative.getChildren().contains(personOne))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isRelationGrandParent(SocialSecurityNumber one, SocialSecurityNumber two)
+    {
+        Person youngestCommonRelative = youngestCommonAncestor(one, two);
+        Person personOne = registry.get(one);
+        Person personTwo = registry.get(two);
+
+        if (youngestCommonRelative.equals(personTwo))
+        {
+            List<Person> twosChildren = personTwo.getChildren();
+            for (Person p : twosChildren)
+            {
+                if (p.getChildren().contains(personOne))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isRelationAuncle(SocialSecurityNumber one, SocialSecurityNumber two)
+    {
+        Person youngestCommonRelative = youngestCommonAncestor(one, two);
+        Person personOne = registry.get(one);
+        Person personTwo = registry.get(two);
+
+        if (youngestCommonRelative.getChildren().contains(personTwo))
+        {
+            List<Person> ycrChildren = youngestCommonRelative.getChildren();
+            for (Person p : ycrChildren)
+            {
+                if (p.getChildren().contains(personOne))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isRelationNibling(SocialSecurityNumber one, SocialSecurityNumber two)
+    {
+        Person youngestCommonRelative = youngestCommonAncestor(one, two);
+        Person personOne = registry.get(one);
+        Person personTwo = registry.get(two);
+
+        if (youngestCommonRelative.getChildren().contains(personOne))
+        {
+            List<Person> ycrChildren = youngestCommonRelative.getChildren();
+            for (Person p : ycrChildren)
+            {
+                if (p.getChildren().contains(personTwo))
+                {
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
+    }
+
+    private boolean isRelationCousin(SocialSecurityNumber one, SocialSecurityNumber two)
+    {
+        Person youngestCommonRelative = youngestCommonAncestor(one, two);
+        Person personOne = registry.get(one);
+        Person personTwo = registry.get(two);
+
+        List<Person> ycrChildren = youngestCommonRelative.getChildren();
+        boolean personOneFound = false;
+        boolean personTwoFound = false;
+
+        for (Person p : ycrChildren)
+        {
+            if (p.getChildren().contains(personOne))
+            {
+                personOneFound = true;
+            }
+            if (p.getChildren().contains(personTwo))
+            {
+                personTwoFound = true;
+            }
+        }
+
+        if (personOneFound && personTwoFound)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isRelationSibling(SocialSecurityNumber one, SocialSecurityNumber two)
+    {
+        Person youngestCommonRelative = youngestCommonAncestor(one, two);
+        Person personOne = registry.get(one);
+        Person personTwo = registry.get(two);
+
+        if (youngestCommonRelative.getChildren().contains(personOne)
+                && youngestCommonRelative.getChildren().contains(personTwo))
+        {
+            return true;
+        }
+
+        return false;
     }
 
 }
