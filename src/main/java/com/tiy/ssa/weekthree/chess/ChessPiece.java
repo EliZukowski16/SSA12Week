@@ -45,12 +45,12 @@ public abstract class ChessPiece implements Piece
                 int thisXDistance = l.getXPosition() - this.where().getXPosition();
                 int thisYDistance = l.getYPosition() - this.where().getYPosition();
 
-                thisDistances.add((double) Math.sqrt(Math.pow(thisXDistance, 2) - Math.pow(thisYDistance, 2)));
+                thisDistances.add((double) Math.sqrt(Math.pow(thisXDistance, 2) + Math.pow(thisYDistance, 2)));
 
                 int otherXDistance = l.getXPosition() - i.where().getXPosition();
                 int otherYDistance = l.getYPosition() - i.where().getYPosition();
 
-                otherDistances.add((double) Math.sqrt(Math.pow(otherXDistance, 2) - Math.pow(otherYDistance, 2)));
+                otherDistances.add((double) Math.sqrt(Math.pow(otherXDistance, 2) + Math.pow(otherYDistance, 2)));
             }
 
             Double thisDistance = thisDistances.stream().min(Comparator.naturalOrder()).get();

@@ -35,6 +35,12 @@ public class ChessPieceTest
         assertFalse(king.equals(new King(new Location(0, 1))));
         assertFalse(king.equals(new Rook(new Location(0, 0))));
         
+        ChessPiece king2 = new King(new Location(1,1));
+        ChessPiece king3 = new King(new Location(0,0));
+        
+        assertEquals(-1, king.compareTo(king2));
+        assertEquals(0, king.compareTo(king3));
+        
         Location validKingMove;
         Location invalidKingMove;
 
