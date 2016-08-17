@@ -3,103 +3,60 @@ package com.tiy.ssa.weektwo.assignmentthree;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Stream;
-
-
+import java.util.stream.Collectors;
 
 public class WordCount
 {
     private List<String> allWords = new ArrayList<>();
-
-    private enum Direction
-    {
-        BOTTOM, TOP
-    };
+    private Map<String, Integer> wordMap = new HashMap<>();
 
     public void addWord(String word)
     {
         allWords.add(word.toLowerCase());
+
+        if (wordMap.get(word.toLowerCase()) != null)
+        {
+            Integer count = wordMap.get(word.toLowerCase());
+            wordMap.put(word.toLowerCase(), ++count);
+        }
+        else
+        {
+            wordMap.put(word.toLowerCase(), 1);
+        }
     }
 
     public int count(String word)
     {
-        int occurrenceOfWord = 0;
-        for (String s : allWords)
+        if (wordMap.get(word.toLowerCase()) != null)
         {
-            if (s.equals(word.toLowerCase()))
-            {
-                occurrenceOfWord++;
-            }
+            return wordMap.get(word.toLowerCase());
         }
 
-        return occurrenceOfWord;
+        return 0;
 
     }
 
-    private Map<String, Integer> getWordCounts()
-    {
-        Map<String, Integer> wordOccurrences = new HashMap<>();
-
-        for (String s : allWords)
-        {
-            wordOccurrences.putIfAbsent(s, count(s));
-        }
-
-        return wordOccurrences;
-    }
-    
-    private Map<String, Integer> sortWords(Map<String, Integer> wordOccurrences, Direction direction)
-    {
-        Map<String, Integer> sortedWords = new LinkedHashMap<>();
-        Stream<Map.Entry<String, Integer>> wordStream = wordOccurrences.entrySet().stream();
-
-        if (direction == Direction.TOP)
-        {
-            wordStream.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .forEachOrdered(e -> sortedWords.put(e.getKey(), e.getValue()));
-        }
-        else
-        {
-            wordStream.sorted(Map.Entry.comparingByValue(Comparator.naturalOrder()))
-                    .forEachOrdered(e -> sortedWords.put(e.getKey(), e.getValue()));
-        }
-
-        return sortedWords;
-    }
-    
     public List<String> top(int many)
     {
-        List<String> sortedWords = new ArrayList<>();
-        Map<String, Integer> sortedMap = sortWords(getWordCounts(), Direction.TOP);
-        
-        Iterator<Entry<String, Integer>> wordIterator = sortedMap.entrySet().iterator();
-        
-        for(int i = 0; i < many; i++)
-        {
-            sortedWords.add(wordIterator.next().getKey());
-        }
-        
-        return sortedWords;
+
+        return wordMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(many)
+                .map(Entry::getKey)
+                .collect(Collectors.toList());
     }
-    
+
     public List<String> bottom(int many)
     {
-        List<String> sortedWords = new ArrayList<>();
-        Map<String, Integer> sortedMap = sortWords(getWordCounts(), Direction.BOTTOM);
-        
-        Iterator<Entry<String, Integer>> wordIterator = sortedMap.entrySet().iterator();
-        
-        for(int i = 0; i < many; i++)
-        {
-            sortedWords.add(wordIterator.next().getKey());
-        }
-        
-        return sortedWords;
+
+        return wordMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.naturalOrder()))
+                .limit(many)
+                .map(Entry::getKey)
+                .collect(Collectors.toList());
     }
 
     public String source()
