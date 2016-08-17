@@ -17,7 +17,7 @@ public class Rook extends ChessPiece
             int xMove = where.getXPosition() - where().getXPosition();
             int yMove = where.getYPosition() - where().getYPosition();
 
-            if (Math.abs(xMove) >= 0 && Math.abs(yMove) >= 0)
+            if (Math.abs(xMove) > 0 && Math.abs(yMove) > 0)
                 return false;
 
             return true;

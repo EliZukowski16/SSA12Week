@@ -22,8 +22,8 @@ public class Knight extends ChessPiece
             int xMove = where.getXPosition() - where().getXPosition();
             int yMove = where.getYPosition() - where().getYPosition();
 
-            if (Math.abs(xMove) <= 2 && Math.abs(yMove) <= 2)
-                if (!(king.canMove(where) || bishop.canMove(where) || rook.canMove(where)))
+            if ((Math.abs(xMove) + Math.abs(yMove)) == 3)
+                if (!(xMove == 0 || yMove == 0))
                     return true;
         }
         return false;
