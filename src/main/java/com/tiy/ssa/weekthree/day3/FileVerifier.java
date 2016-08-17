@@ -23,7 +23,6 @@ public class FileVerifier
             {
                 throw new IllegalArgumentException(path + " does not exist.");
             }
-
         }
         catch (IllegalArgumentException | NoSuchAlgorithmException ex)
         {

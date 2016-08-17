@@ -24,7 +24,6 @@ public class Secure
                 if (args[4].equals("-u"))
                     upperCase = true;
             }
-
         }
 
         try
@@ -41,7 +40,5 @@ public class Secure
         }
         
         System.out.println(outputHash);
-
     }
-
 }
