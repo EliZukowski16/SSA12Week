@@ -34,6 +34,7 @@ public class ChessPieceTest
         assertTrue(king.equals(new King(new Location(0, 0))));
         assertFalse(king.equals(new King(new Location(0, 1))));
         assertFalse(king.equals(new Rook(new Location(0, 0))));
+        assertFalse(king.canMove(king.where()));
 
         ChessPiece king2 = new King(new Location(1, 1));
         ChessPiece king3 = new King(new Location(0, 0));
@@ -81,6 +82,7 @@ public class ChessPieceTest
         assertFalse(bishop.equals(new Bishop(new Location(1, 0))));
         assertFalse(bishop.equals(new Knight(new Location(0, 0))));
         assertEquals(0, bishop.compareTo(new Knight(new Location(0, 0))));
+        assertFalse(bishop.canMove(bishop.where()));
 
         ChessPiece bishop2 = new Bishop(new Location(1, 1));
         ChessPiece bishop3 = new Bishop(new Location(0, 0));
@@ -127,6 +129,7 @@ public class ChessPieceTest
         assertTrue(rook.equals(new Rook(new Location(0, 0))));
         assertFalse(rook.equals(new Rook(new Location(1, 0))));
         assertFalse(rook.equals(new Pawn(new Location(0, 0))));
+        assertFalse(rook.canMove(rook.where()));
 
         ChessPiece rook2 = new Rook(new Location(1, 1));
         ChessPiece rook3 = new Rook(new Location(0, 0));
@@ -173,6 +176,7 @@ public class ChessPieceTest
         assertTrue(pawn.equals(new Pawn(new Location(0, 0))));
         assertFalse(pawn.equals(new Pawn(new Location(1, 0))));
         assertFalse(pawn.equals(new Queen(new Location(0, 0))));
+        assertFalse(pawn.canMove(pawn.where()));
 
         ChessPiece pawn2 = new Pawn(new Location(1, 1));
         ChessPiece pawn3 = new Pawn(new Location(0, 0));
@@ -219,6 +223,7 @@ public class ChessPieceTest
         assertTrue(queen.equals(new Queen(new Location(0, 0))));
         assertFalse(queen.equals(new Queen(new Location(1, 0))));
         assertFalse(queen.equals(new Bishop(new Location(0, 0))));
+        assertFalse(queen.canMove(queen.where()));
 
         ChessPiece queen2 = new Queen(new Location(1, 1));
         ChessPiece queen3 = new Queen(new Location(0, 0));
@@ -270,6 +275,7 @@ public class ChessPieceTest
         assertTrue(knight.equals(new Knight(new Location(0, 0))));
         assertFalse(knight.equals(new Knight(new Location(1, 0))));
         assertFalse(knight.equals(new King(new Location(0, 0))));
+        assertFalse(knight.canMove(knight.where()));
 
         ChessPiece knight2 = new Knight(new Location(1, 1));
         ChessPiece knight3 = new Knight(new Location(0, 0));

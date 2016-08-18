@@ -26,7 +26,7 @@ public class FileVerifier
         }
         catch (IllegalArgumentException | NoSuchAlgorithmException ex)
         {
-            System.err.println(ex);
+            System.err.println(ex.getMessage());
             throw ex;
         }
         finally
@@ -53,7 +53,7 @@ public class FileVerifier
         }
         catch (IOException ioex)
         {
-            System.err.println(ioex);
+            System.err.println(ioex.getMessage());
             throw ioex;
         }
 
