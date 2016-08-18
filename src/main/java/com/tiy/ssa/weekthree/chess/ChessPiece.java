@@ -24,6 +24,7 @@ public abstract class ChessPiece implements Piece
     @Override
     public abstract boolean canMove(Location where);
 
+    
     public int compareTo(Piece o)
     {
         ChessPiece i = (ChessPiece) o;
