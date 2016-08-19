@@ -118,7 +118,7 @@ public class TrieNode
 
         if (node != null && !word.isEmpty())
         {
-            collectWords(node, word, suggestedWords);
+            collectWords(node, word.substring(0, word.length() - 1), suggestedWords);
         }
 
         suggestedWords.sort(Comparator.naturalOrder());
