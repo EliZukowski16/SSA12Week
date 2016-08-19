@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class TrieNode implements Text9Trie
+public class TrieNode
 {
     private Map<Character, TrieNode> children;
     private final Character nodeValue;
@@ -27,7 +27,6 @@ public class TrieNode implements Text9Trie
         this.isWord = false;
     }
 
-    @Override
     public void addWord(String word)
     {
         word = word.toLowerCase();
@@ -57,7 +56,6 @@ public class TrieNode implements Text9Trie
         }
     }
 
-    @Override
     public boolean contains(String word)
     {
         word = word.toLowerCase();
@@ -81,7 +79,6 @@ public class TrieNode implements Text9Trie
 
     }
 
-    @Override
     public boolean remove(String word)
     {
         word = word.toLowerCase();
@@ -107,13 +104,11 @@ public class TrieNode implements Text9Trie
         return false;
     }
 
-    @Override
     public void clear()
     {
         children = new HashMap<>();
     }
 
-    @Override
     public List<String> suggest(String word)
     {
         word = word.toLowerCase();
