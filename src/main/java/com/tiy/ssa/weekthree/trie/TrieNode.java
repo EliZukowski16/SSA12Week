@@ -1,173 +1,178 @@
 package com.tiy.ssa.weekthree.trie;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
-public class TrieNode
+public class TrieNode implements Text9Trie
 {
     private Map<Character, TrieNode> children;
-    private Character nodeValue;
-    private boolean isWord = false;
-    int depth;
+    private final Character nodeValue;
+    private boolean isWord;
 
     public TrieNode()
     {
-        children = new HashMap<>();
-        depth = 0;
+        this.children = new HashMap<>();
+        this.nodeValue = null;
+        this.isWord = false;
     }
 
-    public TrieNode(Character c, int depth)
+    public TrieNode(Character c)
     {
+        this.children = new HashMap<>();
         this.nodeValue = c;
-        children = new HashMap<>();
-        this.depth = depth;
+        this.isWord = false;
     }
 
-    public int addWord(String word)
+    @Override
+    public void addWord(String word)
     {
-        if (word.isEmpty())
+        word = word.toLowerCase();
+        
+        if (word.length() == 0)
         {
-            return depth++;
-        }
-
-        if (word.length() == 1)
-        {
-            nodeValue = word.charAt(0);
             isWord = true;
 
-            return depth;
+            return;
         }
         else
         {
-            nodeValue = word.charAt(0);
-
-            TrieNode child = children.get(word.charAt(1));
+            TrieNode child = children.get(word.charAt(0));
             String restOfWord = word.substring(1);
 
             if (child == null)
             {
-                children.put(word.charAt(1), new TrieNode(word.charAt(1), (this.depth + 1)));
-                return children.get(word.charAt(1)).addWord(restOfWord);
+                children.put(word.charAt(0), new TrieNode(word.charAt(0)));
+                child = children.get(word.charAt(0));
+
+                child.addWord(restOfWord);
             }
             else
             {
-                return child.addWord(restOfWord);
+                child.addWord(restOfWord);
             }
         }
     }
 
+    @Override
     public boolean contains(String word)
     {
-        if (word.isEmpty())
-        {
-            return false;
-        }
-
-        if (word.length() == 1)
+        word = word.toLowerCase();
+        
+        if (word.length() == 0)
         {
             if (isWord)
                 return true;
             return false;
         }
 
-        TrieNode child = children.get(word.charAt(1));
+        TrieNode child = children.get(word.charAt(0));
         String restOfWord = word.substring(1);
 
         if (child != null)
         {
-            return children.get(word.charAt(1)).contains(restOfWord);
+            return child.contains(restOfWord);
         }
 
         return false;
 
     }
 
+    @Override
     public boolean remove(String word)
     {
-        if (word.isEmpty())
+        word = word.toLowerCase();
+
+        if (word.length() == 0)
         {
+            if (isWord)
+            {
+                isWord = false;
+                return true;
+            }
             return false;
         }
-        
-        if(word.length() == 1)
-        {
-            isWord = false;
-            return true;
-        }
 
-        TrieNode child = children.get(word.charAt(1));
+        TrieNode child = children.get(word.charAt(0));
         String restOfWord = word.substring(1);
 
-        if (child == null)
+        if (child != null)
         {
-            return false;
+            return child.remove(restOfWord);
         }
-        else
-        {
-            return children.get(word.charAt(1)).remove(restOfWord);
-        }
+        
+        return false;
     }
 
+    @Override
     public void clear()
     {
         children = new HashMap<>();
     }
 
+    @Override
     public List<String> suggest(String word)
     {
+        word = word.toLowerCase();
+        
         List<String> suggestedWords = new ArrayList<>();
         TrieNode node = getNode(word);
-        
-        suggestedWords.addAll(collectWords(node, word));
-        
-        return suggestedWords;
-    }
-    
-    private List<String> collectWords(TrieNode node, String builtWord)
-    {
-        List<String> words = new ArrayList<>();
-        builtWord = builtWord + String.valueOf(nodeValue);
-        if(isWord)
+
+        if (node != null && !word.isEmpty())
         {
-            words.add(builtWord);
+            collectWords(node, word.substring(0, word.length() - 1), suggestedWords);
         }
-        
-        if(node.children.isEmpty())
+
+        suggestedWords.sort(Comparator.naturalOrder());
+
+        return suggestedWords;
+
+    }
+
+    private void collectWords(TrieNode node, String builtWord, List<String> suggestedWords)
+    {
+
+        builtWord = builtWord + String.valueOf(node.nodeValue);
+        if (node.isWord)
         {
-            return words;
+            suggestedWords.add(builtWord);
+        }
+
+        if (node.children.isEmpty())
+        {
+            return;
         }
         else
         {
-            for(Entry e : node.children.entrySet())
+            for (Entry<Character, TrieNode> e : node.children.entrySet())
             {
-                TrieNode child = children.get(e.getKey());
-                words.addAll(collectWords(child, builtWord));
+                TrieNode child = node.children.get(e.getKey());
+                collectWords(child, builtWord, suggestedWords);
             }
         }
-        
-        return words;
+
+        return;
     }
-    
+
     private TrieNode getNode(String word)
-    {   
-        if(word.length() == 1)
+    {
+        if (word.length() == 0)
         {
             return this;
         }
         else
         {
-            TrieNode child = children.get(word.charAt(1));
+            TrieNode child = children.get(word.charAt(0));
             String restOfWord = word.substring(1);
             if (child != null)
             {
                 return child.getNode(restOfWord);
             }
         }
-        
+
         return null;
     }
 }
