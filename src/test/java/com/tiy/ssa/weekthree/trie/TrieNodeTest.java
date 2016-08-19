@@ -112,6 +112,18 @@ public class TrieNodeTest
         
         assertEquals(0, suggestions.size());
     }
+    
+    @Test
+    public void testThatNoSuggestionsAreReturnedForBadEntry()
+    {
+        List<String> suggestions = testTrie.suggest("2");
+        
+        assertEquals(0, suggestions.size());
+        
+        suggestions = testTrie.suggest("<>{}?/@$$");
+        
+        assertEquals(0, suggestions.size());
+    }
 
     @Test
     public void testThatSuggestionWorksCorrectly()

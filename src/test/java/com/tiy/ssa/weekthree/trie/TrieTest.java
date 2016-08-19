@@ -114,6 +114,18 @@ public class TrieTest
     }
     
     @Test
+    public void testThatNoSuggestionsAreReturnedForBadEntry()
+    {
+        List<String> suggestions = text9Trie.suggest("a");
+        
+        assertEquals(0, suggestions.size());
+        
+        suggestions = text9Trie.suggest("<>{}?/@$$");
+        
+        assertEquals(0, suggestions.size());
+    }
+    
+    @Test
     public void testThatSuggestionWorksCorrectly()
     {
         List<char[]> t9 = new ArrayList<>();

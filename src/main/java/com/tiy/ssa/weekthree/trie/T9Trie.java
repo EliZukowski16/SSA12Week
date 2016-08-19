@@ -70,7 +70,7 @@ public class T9Trie implements Text9Trie
             return;
         }
         
-        char[] possibleChars = t9Map.get(digits.substring(0,1));
+        char[] possibleChars = t9Map.getOrDefault(digits.substring(0,1), new char[] {});
         
         if(possibleChars.length == 0)
         {
