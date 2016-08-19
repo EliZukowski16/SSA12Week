@@ -21,10 +21,34 @@ public class TrieTest
 
     T9Trie text9Trie;
     Set<String> dictionary;
+    List<char[]> t9;
 
     @Before
     public void setup() throws IOException
     {
+        t9 = new ArrayList<>();
+
+        t9.add(0, new char[]
+        {});
+        t9.add(1, new char[]
+        {});
+        t9.add(2, new char[]
+        { 'a', 'b', 'c' });
+        t9.add(3, new char[]
+        { 'd', 'e', 'f' });
+        t9.add(4, new char[]
+        { 'g', 'h', 'i' });
+        t9.add(5, new char[]
+        { 'j', 'k', 'l' });
+        t9.add(6, new char[]
+        { 'm', 'n', 'o' });
+        t9.add(7, new char[]
+        { 'p', 'q', 'r', 's' });
+        t9.add(8, new char[]
+        { 't', 'u', 'v' });
+        t9.add(9, new char[]
+        { 'w', 'x', 'y', 'z' });
+
         text9Trie = new T9Trie();
         dictionary = new HashSet<>();
 
@@ -63,22 +87,22 @@ public class TrieTest
                 reader.close();
         }
     }
-    
+
     @Test
     public void testThatClearEmptiesTrie()
     {
         text9Trie.clear();
-        
-        for(String s : dictionary)
+
+        for (String s : dictionary)
         {
             assertFalse(text9Trie.contains(s));
         }
     }
-    
+
     @Test
     public void testThatRemoveCorrectlyRemovesWord()
     {
-        for(String s : dictionary)
+        for (String s : dictionary)
         {
             assertTrue(text9Trie.contains(s));
             assertTrue(text9Trie.remove(s));
@@ -86,7 +110,7 @@ public class TrieTest
             assertFalse(text9Trie.remove(s));
         }
     }
-    
+
     @Test
     public void testThatRemoveIsCaseInsensitive()
     {
@@ -98,116 +122,112 @@ public class TrieTest
             assertFalse(text9Trie.remove(s.toUpperCase()));
         }
     }
-    
+
     @Test
     public void testThatNoSuggestionsAreReturnedForBlankEntry()
     {
         List<String> suggestions = text9Trie.suggest("");
-        
+
         assertEquals(0, suggestions.size());
-        
+
         text9Trie.addWord("");
-        
+
         suggestions = text9Trie.suggest("");
-        
+
         assertEquals(0, suggestions.size());
     }
-    
+
     @Test
     public void testThatNoSuggestionsAreReturnedForBadEntry()
     {
         List<String> suggestions = text9Trie.suggest("a");
-        
+
         assertEquals(0, suggestions.size());
-        
+
         suggestions = text9Trie.suggest("<>{}?/@$$");
-        
+
         assertEquals(0, suggestions.size());
     }
-    
+
     @Test
-    public void testThatSuggestionWorksCorrectly()
+    public void testThatSuggestionWorksCorrectlyForOneDigit()
     {
-        List<char[]> t9 = new ArrayList<>();
-        
-        t9.add(0, new char[] {});
-        t9.add(1, new char[] {});
-        t9.add(2, new char[] {'a','b','c'});
-        t9.add(3, new char[] {'d','e','f'});
-        t9.add(4, new char[] {'g','h','i'});
-        t9.add(5, new char[] {'j','k','l'});
-        t9.add(6, new char[] {'m','n','o'});
-        t9.add(7, new char[] {'p','q','r','s'});
-        t9.add(8, new char[] {'t','u','v'});
-        t9.add(9, new char[] {'w','x','y','z'});
-        
-        for(int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++)
         {
             List<String> suggestions = text9Trie.suggest(String.valueOf(i));
             List<String> subDictionary = new ArrayList<>();
-            
-            for(String s : dictionary)
+
+            for (String s : dictionary)
             {
-                for(Character c : t9.get(i))
+                for (Character c : t9.get(i))
                 {
-                    if(s.startsWith(String.valueOf(c)))
+                    if (s.startsWith(String.valueOf(c)))
                     {
                         subDictionary.add(s);
                     }
                 }
             }
-            
+
             subDictionary.sort(Comparator.naturalOrder());
-            
+
             assertEquals(subDictionary, suggestions);
-            
+
         }
-        
-        for(int i = 0; i < 10; i++)
+    }
+
+    @Test
+    public void testThatSuggestionWorksCorrectlyForTwoDigits()
+    {
+        for (int i = 0; i < 10; i++)
         {
-            for(int j = 0; j < 10; j++)
+            for (int j = 0; j < 10; j++)
             {
                 List<String> suggestions = text9Trie.suggest(String.valueOf(i) + String.valueOf(j));
                 List<String> subDictionary = new ArrayList<>();
-                
-                for(String s : dictionary)
+
+                for (String s : dictionary)
                 {
-                    for(Character c : t9.get(i))
+                    for (Character c : t9.get(i))
                     {
-                        for(Character d : t9.get(j))
+                        for (Character d : t9.get(j))
                         {
-                            if(s.startsWith(String.valueOf(c) + String.valueOf(d)))
+                            if (s.startsWith(String.valueOf(c) + String.valueOf(d)))
                             {
                                 subDictionary.add(s);
                             }
                         }
                     }
                 }
-                
+
                 subDictionary.sort(Comparator.naturalOrder());
-                
+
                 assertEquals(subDictionary, suggestions);
             }
         }
-        
-        for(int i = 0; i < 10; i++)
+    }
+
+    @Test
+    public void testThatSuggestionWorksCorrectlyForThreeDigits()
+    {
+        for (int i = 0; i < 10; i++)
         {
-            for(int j = 0; j < 10; j++)
+            for (int j = 0; j < 10; j++)
             {
-                for(int h = 0; h < 10; h++)
+                for (int h = 0; h < 10; h++)
                 {
-                    List<String> suggestions = text9Trie.suggest(String.valueOf(i) + String.valueOf(j) + String.valueOf(h));
+                    List<String> suggestions = text9Trie
+                            .suggest(String.valueOf(i) + String.valueOf(j) + String.valueOf(h));
                     List<String> subDictionary = new ArrayList<>();
-                    
-                    for(String s : dictionary)
+
+                    for (String s : dictionary)
                     {
-                        for(Character c : t9.get(i))
+                        for (Character c : t9.get(i))
                         {
-                            for(Character d : t9.get(j))
+                            for (Character d : t9.get(j))
                             {
-                                for(Character e : t9.get(h))
+                                for (Character e : t9.get(h))
                                 {
-                                    if(s.startsWith(String.valueOf(c) + String.valueOf(d) + String.valueOf(e)))
+                                    if (s.startsWith(String.valueOf(c) + String.valueOf(d) + String.valueOf(e)))
                                     {
                                         subDictionary.add(s);
                                     }
@@ -215,9 +235,9 @@ public class TrieTest
                             }
                         }
                     }
-                    
+
                     subDictionary.sort(Comparator.naturalOrder());
-                    
+
                     assertEquals(subDictionary, suggestions);
                 }
             }

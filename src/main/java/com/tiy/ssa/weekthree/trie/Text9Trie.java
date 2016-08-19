@@ -4,14 +4,14 @@ import java.util.List;
 
 public interface Text9Trie
 {
-     void addWord(String word);
+    void addWord(String word);
 
-     boolean contains(String word);
+    boolean contains(String word);
 
-     boolean remove(String word);
+    boolean remove(String word);
 
-     void clear();
+    void clear();
 
-     List<String> suggest(String digits);
+    List<String> suggest(String digits);
 
 }

@@ -30,7 +30,7 @@ public class TrieNode
     public void addWord(String word)
     {
         word = word.toLowerCase();
-        
+
         if (word.length() == 0)
         {
             isWord = true;
@@ -59,7 +59,7 @@ public class TrieNode
     public boolean contains(String word)
     {
         word = word.toLowerCase();
-        
+
         if (word.length() == 0)
         {
             if (isWord)
@@ -100,7 +100,7 @@ public class TrieNode
         {
             return child.remove(restOfWord);
         }
-        
+
         return false;
     }
 
@@ -112,7 +112,7 @@ public class TrieNode
     public List<String> suggest(String word)
     {
         word = word.toLowerCase();
-        
+
         List<String> suggestedWords = new ArrayList<>();
         TrieNode node = getNode(word);
 

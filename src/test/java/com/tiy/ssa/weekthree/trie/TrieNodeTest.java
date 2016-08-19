@@ -86,7 +86,7 @@ public class TrieNodeTest
             assertFalse(testTrie.remove(s));
         }
     }
-    
+
     @Test
     public void testThatRemoveIsCaseInsensitive()
     {
@@ -98,35 +98,35 @@ public class TrieNodeTest
             assertFalse(testTrie.remove(s.toUpperCase()));
         }
     }
-    
+
     @Test
     public void testThatNoSuggestionsAreReturnedForBlankEntry()
     {
         List<String> suggestions = testTrie.suggest("");
-        
+
         assertEquals(0, suggestions.size());
-        
+
         testTrie.addWord("");
-        
+
         suggestions = testTrie.suggest("");
-        
-        assertEquals(0, suggestions.size());
-    }
-    
-    @Test
-    public void testThatNoSuggestionsAreReturnedForBadEntry()
-    {
-        List<String> suggestions = testTrie.suggest("2");
-        
-        assertEquals(0, suggestions.size());
-        
-        suggestions = testTrie.suggest("<>{}?/@$$");
-        
+
         assertEquals(0, suggestions.size());
     }
 
     @Test
-    public void testThatSuggestionWorksCorrectly()
+    public void testThatNoSuggestionsAreReturnedForBadEntry()
+    {
+        List<String> suggestions = testTrie.suggest("2");
+
+        assertEquals(0, suggestions.size());
+
+        suggestions = testTrie.suggest("<>{}?/@$$");
+
+        assertEquals(0, suggestions.size());
+    }
+
+    @Test
+    public void testThatSuggestionWorksCorrectlyForOneLetter()
     {
         for (int i = 0; i < 26; i++)
         {
@@ -147,7 +147,11 @@ public class TrieNodeTest
             assertEquals(subDictionary, suggestions);
 
         }
+    }
 
+    @Test
+    public void testThatSuggestionWorksCorrectlyForTwoLetters()
+    {
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -168,7 +172,11 @@ public class TrieNodeTest
                 assertEquals(subDictionary, suggestions);
             }
         }
+    }
 
+    @Test
+    public void testThatSuggestionWorksCorrectlyForThreeLetters()
+    {
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -196,5 +204,4 @@ public class TrieNodeTest
             }
         }
     }
-
 }
