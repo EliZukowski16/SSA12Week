@@ -3,10 +3,14 @@ package com.tiy.ssa.weekone.assignmentfour;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Knight
 {
     final Location startingLocation;
     Location currentLocation;
+    static final Logger LOGGER = LogManager.getLogger();
 
     ArrayList<Location> moves = new ArrayList<>();
 
@@ -39,7 +43,6 @@ public class Knight
         { -2, -1, 1, 2 };
 
         ArrayList<int[]> possibleMoves = new ArrayList<>();
-        // Vector<Float> nextMoveDistance = new Vector<>();
         Vector<Double> nextMoveWeight = new Vector<>();
         Vector<Double> nextMoveScaled = new Vector<>();
 
@@ -75,9 +78,10 @@ public class Knight
             distanceY = currentLocation.y + startingLocation.y + i[1];
 
             distance = (float) Math.sqrt((Math.pow(distanceX, 2) + Math.pow(distanceY, 2)));
-            // nextMoveDistance.add(distance);
-            // System.out.println(distance);
-            // System.out.println(1/distance);
+            
+            LOGGER.debug("Distance is {}", distance);
+            
+            LOGGER.debug("1/Distance is {}", 1/distance);
             if (!firstMove)
             {
                 Location previousLocation = moves.get(moves.size() - 2);
@@ -125,7 +129,7 @@ public class Knight
 
         for (double i : nextMoveWeight)
         {
-            // System.out.println(i);
+            LOGGER.debug("Weighted Move: {}", i);
         }
 
         sumScale = 0;
@@ -147,7 +151,7 @@ public class Knight
                 nextMoveScaled.add(0.0);
             }
 
-            // System.out.println(nextMoveScaled.get(i));
+            LOGGER.debug("Scaled Move: {}", i);
         }
 
         nextRandomDecision = (float) Math.random();
@@ -171,32 +175,6 @@ public class Knight
         nextLocation = currentLocation.offset(nextMove[0], nextMove[1]);
         moves.add(nextLocation);
         currentLocation = nextLocation;
-        // System.out.println(currentLocation.getLocation());
-
-        // System.out.println(nextRandomDecision + " , " + nextRandomMove + " ,
-        // " + nextMoveScaled.get(nextRandomMove));
-
-        // if(moves.size() == 1)
-        // {
-        // Location nextLocation;
-        // int[] nextMove = possibleMoves.get(((int)(Math.random() * 8)));
-        // nextLocation = currentLocation.offset(nextMove[0], nextMove[1]);
-        // moves.add(nextLocation);
-        // currentLocation = nextLocation;
-        // System.out.println(currentLocation.getLocation());
-        // }
-        // else
-        // {
-        //
-        // }
-        //
-
-        // for(int[] move : possibleMoves)
-        // {
-        // System.out.println(move[0] + " " + move[1]);
-        // }
-
-        // System.out.println(testPosition[0]);
     }
 
     public void lazyMove()

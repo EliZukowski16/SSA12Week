@@ -1,7 +1,11 @@
 package com.tiy.ssa.weekthree.day3;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Secure
 {
+    static Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args)
     {
@@ -38,7 +42,7 @@ public class Secure
         {
             
         }
-        
+        LOGGER.info(outputHash);
         System.out.println(outputHash);
     }
 }

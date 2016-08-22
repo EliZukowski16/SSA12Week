@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import com.tiy.ssa.weektwo.assignmentthree.WordCount;
@@ -16,6 +18,7 @@ import com.tiy.ssa.weektwo.assignmentthree.WordCount;
 public class WordCountTestsDay3
 {
     WordCount counter = new WordCount();
+    static Logger LOGGER = LogManager.getLogger();
 
     @Test
     public void justChecking() throws Exception
@@ -49,7 +52,8 @@ public class WordCountTestsDay3
                 }
             }
             List<String> top = this.counter.top(12);
-            System.err.println(top);
+            LOGGER.info(top);
+            
         }
 
         catch (IOException iex)

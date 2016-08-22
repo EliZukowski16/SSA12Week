@@ -6,10 +6,15 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 public class MapTests
 {
+    
+    static Logger LOGGER = LogManager.getLogger();
 
     @Test
     public void initial()
@@ -28,7 +33,7 @@ public class MapTests
         
         for(Entry entry : map.entrySet())
         {
-            System.out.println(entry.getKey().hashCode());
+            LOGGER.info(entry.getKey().hashCode());
         }
         
         

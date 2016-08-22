@@ -1,20 +1,25 @@
 package com.tiy.ssa.weekone.assignmentfour;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
-
-import junit.framework.Assert;
 
 public class KnightTests
 {
+    
+    static final Logger LOGGER = LogManager.getLogger("com.tiy.ssa.weekone.assignmentfour.KnightTests");
 
     @Test
     public void testThatKnightsCurrentPositionIsStartingPositionIfNoMovesMade()
     {
         Knight testKnight = new Knight();
-        System.out.println("No Moves");
-        System.out.println(testKnight.getCurrentPosition());
+        
+        
+        LOGGER.info("No Moves");
+        LOGGER.info("Starting Position {}",testKnight.getCurrentPosition());
         assertTrue(testKnight.getCurrentPosition().equals(testKnight.getHomePosition()));
     }
 
@@ -22,12 +27,11 @@ public class KnightTests
     public void testThatKnightsMove()
     {
         Knight testKnight = new Knight();
-        System.out.println("One Move - Non-Deterministic");
-        System.out.println(testKnight.getCurrentPosition());
+        LOGGER.info("One Move - Non-Deterministic");
+        LOGGER.info("Starting Position: {}", testKnight.getCurrentPosition());
         
         testKnight.move();
-        System.out.println(testKnight.getCurrentPosition());
-        System.out.println("");
+        LOGGER.info("Position 1: {}", testKnight.getCurrentPosition());
         assertFalse(testKnight.getHomePosition().equals(testKnight.getCurrentPosition()));
     }
 
@@ -35,16 +39,14 @@ public class KnightTests
     public void testThatKnightDoesNotBackTrackAfterTwoMoves()
     {
         Knight testKnight = new Knight();
-        System.out.println("Two Moves - Non-Deterministic");
-        System.out.println(testKnight.getCurrentPosition());
+        LOGGER.info("Two Moves - Non Deterministic");
+        LOGGER.info("Starting Position: {}", testKnight.getCurrentPosition());
         
         for(int i = 0; i < 2; i++)
         {
             testKnight.move();
-            System.out.println(testKnight.getCurrentPosition());
+            LOGGER.info("Position {}: {}", i+1, testKnight.getCurrentPosition());
         }
-        
-        System.out.println("");
 
         assertFalse(testKnight.getHomePosition().equals(testKnight.getCurrentPosition()));
     }
@@ -53,16 +55,14 @@ public class KnightTests
     public void testThatKnightDoesNotBackTrackAfterThreeMoves()
     {
         Knight testKnight = new Knight();
-        System.out.println("Three Moves - Non-Deterministic");
-        System.out.println(testKnight.getCurrentPosition());
+        LOGGER.info("Three Moves - Non-Deterministic");
+        LOGGER.info("Starting Position: {}", testKnight.getCurrentPosition());
         
         for(int i = 0; i < 3; i++)
         {
             testKnight.move();
-            System.out.println(testKnight.getCurrentPosition());
+            LOGGER.info("Position {}: {}", i+1, testKnight.getCurrentPosition());
         }
-        
-        System.out.println("");
 
         assertFalse(testKnight.getHomePosition().equals(testKnight.getCurrentPosition()));
     }
@@ -71,16 +71,14 @@ public class KnightTests
     public void testThatKnightReturnsHomeAfterOptimalNumberOfMoves()
     {
         Knight testKnight = new Knight();
-        System.out.println("Four Moves - Non-Deterministic - Should Return Home");
-        System.out.println(testKnight.getCurrentPosition());
+        LOGGER.info("Four Moves - Non-Deterministic - Should Return Home");
+        LOGGER.info("Starting Position: {}", testKnight.getCurrentPosition());
         
         for(int i = 0; i < 4; i++)
         {
             testKnight.move();
-            System.out.println(testKnight.getCurrentPosition());
+            LOGGER.info("Position {}: {}", i+1, testKnight.getCurrentPosition());
         }
-        
-        System.out.println("");
 
         assertTrue(testKnight.getHomePosition().equals(testKnight.getCurrentPosition()));
 
@@ -90,29 +88,27 @@ public class KnightTests
     public void testLazyMove()
     {
         Knight testKnight = new Knight();
-        System.out.println("Test of Deterministic Move - Four Moves");
-        System.out.println(testKnight.getCurrentPosition());
-        
+        LOGGER.info("Test of Deterministic Move - Four Moves");
+        LOGGER.info("Starting Position: {}", testKnight.getCurrentPosition());
+       
         for(int i = 0; i < 4; i++)
         {
             testKnight.lazyMove();
-            System.out.println(testKnight.getCurrentPosition());
+            LOGGER.info("Position {}: {}", i+1, testKnight.getCurrentPosition());
         }
         
-        System.out.println("");
 
         assertTrue(testKnight.getHomePosition().equals(testKnight.getCurrentPosition()));
         
-        System.out.println("Test of Deterministic Move - Four additional moves");
-        System.out.println(testKnight.getCurrentPosition());
+        LOGGER.info("Test of Deterministic Move - Four Additional Moves");
+        LOGGER.info("Current Position: {}", testKnight.getCurrentPosition());
         
         for(int i = 0; i < 4; i++)
         {
             testKnight.lazyMove();
-            System.out.println(testKnight.getCurrentPosition());
+            LOGGER.info("Position {}: {}", i+1, testKnight.getCurrentPosition());
         }
         
-        System.out.println("");
 
         assertTrue(testKnight.getHomePosition().equals(testKnight.getCurrentPosition()));
     }

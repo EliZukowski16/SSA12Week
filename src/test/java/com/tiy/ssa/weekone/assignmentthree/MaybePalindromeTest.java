@@ -1,6 +1,8 @@
 package com.tiy.ssa.weekone.assignmentthree;
 
 import static org.junit.Assert.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,6 +12,7 @@ public class MaybePalindromeTest
 {
 	
 	MaybePalindrome testPalindrome;
+	static final Logger LOGGER = LogManager.getLogger();
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -28,7 +31,7 @@ public class MaybePalindromeTest
 	{
 		testPalindrome = new MaybePalindrome("Racecars");
 		assertFalse(testPalindrome.isPalindrome());
-		System.out.println(testPalindrome.toString());
+		LOGGER.debug(testPalindrome.toString());
 	}
 	
 	@Test
@@ -36,6 +39,6 @@ public class MaybePalindromeTest
 	{
 		testPalindrome = new MaybePalindrome("MadAm");
 		assertTrue(testPalindrome.isPalindrome());
-		System.out.println(testPalindrome.toString());
+		LOGGER.debug(testPalindrome.toString());
 	}
 }

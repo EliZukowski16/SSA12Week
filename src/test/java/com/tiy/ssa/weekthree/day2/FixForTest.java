@@ -8,19 +8,22 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 public class FixForTest
 {
     
     Iterator<String> iOverString;
+    static Logger LOGGER = LogManager.getLogger();
 
     @Test
     public void test()
     {
         iOverString = Arrays.asList("It's", "the", "end").iterator();
         for(String s : new FixFor<>(iOverString))
-            System.out.println(s);
+            LOGGER.info(s);
     }
     
     @Test
@@ -36,7 +39,7 @@ public class FixForTest
         
         for(String s : keys)
         {
-            System.err.println(s);
+            LOGGER.info(s);
         }
         
         keys.add("potato");

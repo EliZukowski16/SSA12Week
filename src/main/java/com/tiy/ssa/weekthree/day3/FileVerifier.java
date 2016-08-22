@@ -8,10 +8,14 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class FileVerifier
 {
     private MessageDigest digest;
     private File file;
+    static Logger LOGGER = LogManager.getLogger();
 
     public FileVerifier(String path, String hashFunc) throws Exception
     {
@@ -26,6 +30,7 @@ public class FileVerifier
         }
         catch (IllegalArgumentException | NoSuchAlgorithmException ex)
         {
+            LOGGER.error(ex.getMessage());
             System.err.println(ex.getMessage());
             throw ex;
         }
@@ -53,6 +58,7 @@ public class FileVerifier
         }
         catch (IOException ioex)
         {
+            LOGGER.error(ioex.getMessage());
             System.err.println(ioex.getMessage());
             throw ioex;
         }

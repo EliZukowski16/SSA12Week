@@ -5,12 +5,16 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 public class FooAndGooTest
 {
     Set<Foo> foo = new HashSet<>();
     Set<Goo> goo = new HashSet<>();
+    
+    static Logger LOGGER = LogManager.getLogger();
     
     
     @Test
@@ -19,8 +23,8 @@ public class FooAndGooTest
         Foo fooOne = new Foo("Test");
         Foo fooTwo = new Foo("Test");
         
-        System.out.println(fooOne.hashCode());
-        System.out.println(fooTwo.hashCode());
+        LOGGER.info("fooOne HashCode: {}", fooOne.hashCode());
+        LOGGER.info("fooTwo HashCode: {}", fooTwo.hashCode());
         
         assertTrue(foo.add(fooOne));
         assertTrue(foo.add(fooTwo));
@@ -33,8 +37,8 @@ public class FooAndGooTest
         Goo gooOne = new Goo("Test");
         Goo gooTwo = new Goo("Test");
         
-        System.out.println(gooOne.hashCode());
-        System.out.println(gooTwo.hashCode());
+        LOGGER.info("gooOne HashCode: {}", gooOne.hashCode());
+        LOGGER.info("gooTwo HashCode: {}", gooTwo.hashCode());
         
         assertTrue(goo.add(gooOne));
         assertFalse(goo.add(gooTwo));
