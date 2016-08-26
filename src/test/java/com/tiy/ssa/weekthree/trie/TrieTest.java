@@ -263,14 +263,11 @@ public class TrieTest
 
     @Test
     public void testThatSuggestionWorksCorrectlyForOneDigit()
-    {
-        int i = 0;
-        
+    {  
         for(Entry<String, List<String>> e : subDictionaryOneDigit.entrySet())
         {
-            i++;
             assertEquals(e.getValue(), text9Trie.suggest(e.getKey()));
-            LOGGER.info("One Digit {}",i);
+            LOGGER.info("One Digit {}: {}", e.getKey(), e.getValue().size());
         }
         
 //        for (int i = 0; i < 10; i++)
@@ -299,12 +296,10 @@ public class TrieTest
     @Test
     public void testThatSuggestionWorksCorrectlyForTwoDigits()
     {
-        int i = 0;
         for(Entry<String, List<String>> e : subDictionaryTwoDigits.entrySet())
         {
-            i++;
             assertEquals(e.getValue(), text9Trie.suggest(e.getKey()));
-            LOGGER.info("Two Digits {}",i);
+            LOGGER.info("Two Digits {}: {}", e.getKey(), e.getValue().size());
         }
         
 //        for (int i = 0; i < 10; i++)
@@ -338,12 +333,10 @@ public class TrieTest
     @Test
     public void testThatSuggestionWorksCorrectlyForThreeDigits()
     {
-        int i = 0;
         for(Entry<String, List<String>> e : subDictionaryThreeDigits.entrySet())
         {
-            i++;
             assertEquals(e.getValue(), text9Trie.suggest(e.getKey()));
-            LOGGER.info("Three Digits {}",i);
+            LOGGER.info("Three Digits {}: {}", e.getKey(), e.getValue().size());
         }
         
 //        for (int i = 0; i < 10; i++)
