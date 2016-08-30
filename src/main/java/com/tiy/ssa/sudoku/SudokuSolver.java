@@ -6,10 +6,27 @@ public class SudokuSolver
 
     String[][] solvedBoard;
 
+    Cell startingCell;
+
     public SudokuSolver(String[][] initialBoard)
     {
         this.initialBoard = initialBoard;
         this.solvedBoard = initialBoard;
+    }
+    
+    public SudokuSolver()
+    {
+        this.initialBoard = new String[9][9];
+        
+        for(int row = 0; row < 9; row++)
+        {
+            for(int col = 0; col < 9; col++)
+            {
+                this.initialBoard[row][col] = "0";
+            }
+        }
+        
+        this.solvedBoard = this.initialBoard;
     }
 
     class Cell
@@ -47,44 +64,66 @@ public class SudokuSolver
         return true;
     }
 
-    Cell getNextCell(Cell currentCell)
+    Cell getBestCell()
     {
-        int row = currentCell.row;
-        int col = currentCell.col;
+        int numberSolved = 0;
+        int numberEmptyCells = 0;
+        
+        
+        Cell bestCell = new Cell(0,0);
 
-        col++;
-
-        if (col > 8)
+        for (int row = 0; row < 9; row++)
         {
-            col = 0;
-            row++;
+            for (int col = 0; col < 9; col++)
+            {
+                if (initialBoard[row][col].equals("0"))
+                {
+
+                    int count = 0;
+                    numberEmptyCells++;
+
+                    for (int i = 0; i < 9; i++)
+                    {
+                        if (!initialBoard[row][i].equals("0"))
+                            count++;
+                        
+                        
+                        if(!initialBoard[i][col].equals("0"))
+                            count++;
+                    }
+                    
+                    if(count > numberSolved)
+                    {
+                        bestCell = new Cell(row, col);
+                        numberSolved = count;
+                    }
+                }
+            }
         }
-
-        if (row > 8)
+        
+        if(numberEmptyCells == 0)
             return null;
-
-        return new Cell(row, col);
+        
+        return bestCell;
+        
+        
     }
 
     boolean solve(Cell currentCell)
     {
-        if (currentCell == null)
+        
+        if(currentCell == null)
             return true;
-
-        if (!(solvedBoard[currentCell.row][currentCell.col].equals("0")))
-        {
-            return solve(getNextCell(currentCell));
-        }
 
         for (int i = 1; i < 10; i++)
         {
             if (isValid(currentCell, String.valueOf(i)))
             {
                 solvedBoard[currentCell.row][currentCell.col] = String.valueOf(i);
-                if (solve(getNextCell(currentCell)))
-                {
+                
+                if (solve(getBestCell()))
                     return true;
-                }
+                
                 solvedBoard[currentCell.row][currentCell.col] = "0";
             }
         }
@@ -95,8 +134,10 @@ public class SudokuSolver
     public String solveBoard()
     {
         String solvedString = "";
+        
+        startingCell = getBestCell();
 
-        this.solve(new Cell(0, 0));
+        this.solve(startingCell);
 
         for (int i = 0; i < 9; i++)
         {
@@ -104,7 +145,6 @@ public class SudokuSolver
             {
                 solvedString = solvedString + solvedBoard[i][j];
             }
-
         }
 
         return solvedString;
